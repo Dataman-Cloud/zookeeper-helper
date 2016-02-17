@@ -1,0 +1,31 @@
+FROM alpine:3.3 
+MAINTAINER Will <zhguo.dataman-inc.com>
+RUN apk update && apk add go git 
+
+ENV GOROOT /usr/lib/go
+ENV GOPATH /go
+ENV GOBIN /go/bin
+ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
+ENV GO15VENDOREXPERIMENT 1
+
+RUN mkdir -p /etc/omega
+ADD src/src /zookeeper-helper
+ADD zookeeper-helper.yaml.sample /etc/omega/zookeeper-helper.yaml
+
+ADD . /go/src/github.com/Dataman-Cloud/zookeeper-helper
+
+
+RUN cd /go/src/github.com/Dataman-Cloud/zookeeper-helper/src && \ 
+    go build && \
+    chmod 777 src && \
+    cp src /zookeeper-helper
+
+RUN rm -rf /go && rm -rf /usr/lib/go 
+
+#VOLUME /var/log/zookeeper-helper
+#VOLUME /etc/omega/zookeeper-helper.yaml 
+
+
+EXPOSE 8082 
+
+CMD /zookeeper-helper

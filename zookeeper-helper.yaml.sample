@@ -1,0 +1,10 @@
+---
+numCPU: 1
+debugging: false
+log:
+    console: true
+    file: "/var/log/omega/zookeeper-helper.log"
+    level: "debug"
+    formatter: "%Date(2006-01-02 15:04:05Z07:00) [%LEVEL] %Msg%n"
+    fileSize: 5000000
+    fileNum: 10
